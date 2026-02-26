@@ -1,3 +1,4 @@
+from multiprocessing import Process
 from os.path import join
 from pathlib import Path
 from tempfile import gettempdir
@@ -82,7 +83,9 @@ def worker():
 
 
 def main():
-    worker()
+    process =Process(target=worker)
+    process.start()
+    process.join()
 
 
 if __name__ == "__main__":
