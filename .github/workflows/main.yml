@@ -1,0 +1,35 @@
+name: Main
+
+on:
+  push:
+    branches:
+    - main
+    tags:
+    - v[0-9]+.[0-9]+.[0-9]+
+
+jobs:
+  test-all-platforms:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+
+    - name: Install python
+      run: uv python install
+
+    - name: Install build dependencies (macOS)
+      run: |
+        brew install llvm spatialite
+        echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
+        echo "CXX=/opt/homebrew/opt/llvm/bin/clang++" >> $GITHUB_ENV
+        echo "LDFLAGS=-L/opt/homebrew/opt/llvm/lib" >> $GITHUB_ENV
+        echo "CPPFLAGS=-I/opt/homebrew/opt/llvm/include" >> $GITHUB_ENV
+
+    - name: Install
+      run: uv sync --locked
+
+    - name: Run script
+      run: |
+          uv run main.py
