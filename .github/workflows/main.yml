@@ -8,7 +8,7 @@ on:
     - v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
-  test-all-platforms:
+  setup-and-run:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v5
@@ -21,7 +21,7 @@ jobs:
 
     - name: Install build dependencies (macOS)
       run: |
-        brew install llvm spatialite
+        brew install llvm libspatialite
         echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
         echo "CXX=/opt/homebrew/opt/llvm/bin/clang++" >> $GITHUB_ENV
         echo "LDFLAGS=-L/opt/homebrew/opt/llvm/lib" >> $GITHUB_ENV
