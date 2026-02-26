@@ -32,6 +32,6 @@ jobs:
 
     - name: Run script
       env:
-        MULTIPROCESSING_START_METHOD: ${{ start_method }}
+        MULTIPROCESSING_START_METHOD: ${{ matrix.start_method }}
       run: |
           DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/homebrew/lib uv run main.py
