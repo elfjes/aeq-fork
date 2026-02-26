@@ -79,14 +79,14 @@ def worker():
 
     # Close the project
     project.close()
-    print("Done!")
-
+    print("Worker done")
 
 def main():
+    print("starting")
     process =Process(target=worker)
     process.start()
     process.join()
-
+    print("All done!")
 
 if __name__ == "__main__":
     main()
