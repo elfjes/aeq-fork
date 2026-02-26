@@ -19,13 +19,6 @@ jobs:
     - name: Install build dependencies (macOS)
       run: |
         brew install llvm libspatialite
-        echo "CC=/opt/homebrew/opt/llvm/bin/clang" >> $GITHUB_ENV
-        echo "CXX=/opt/homebrew/opt/llvm/bin/clang++" >> $GITHUB_ENV
-        echo "LDFLAGS=-L/opt/homebrew/opt/llvm/lib" >> $GITHUB_ENV
-        echo "CPPFLAGS=-I/opt/homebrew/opt/llvm/include" >> $GITHUB_ENV
-
-    - name: Install Python and create virtual environment
-      run: uv venv .venv --python-preference only-managed  --clear
 
     - name: Install dependencies (macOS)
       env:
