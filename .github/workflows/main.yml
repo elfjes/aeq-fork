@@ -9,6 +9,10 @@ on:
 
 jobs:
   setup-and-run:
+    strategy:
+      fail-fast: false
+      matrix:
+        start_method: [fork, spawn]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v6
@@ -27,5 +31,7 @@ jobs:
       run: uv sync --locked
 
     - name: Run script
+      env:
+        MULTIPROCESSING_START_METHOD: ${{ start_method }}
       run: |
           DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/homebrew/lib uv run main.py

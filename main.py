@@ -1,4 +1,5 @@
-from multiprocessing import Process
+import os
+from multiprocessing import Process, get_context, get_start_method
 from os.path import join
 from pathlib import Path
 from tempfile import gettempdir
@@ -81,12 +82,17 @@ def worker():
     project.close()
     print("Worker done")
 
+
 def main():
-    print("starting")
-    process =Process(target=worker)
+    start_method = os.environ.get("MULTIPROCESSING_START_METHOD") or None
+    default_start_method = get_start_method()
+    print(f"Using start method {start_method or f'{default_start_method} (default)'}")
+    context = get_context(start_method)
+    process = context.Process(target=worker)
     process.start()
     process.join()
     print("All done!")
+
 
 if __name__ == "__main__":
     main()
