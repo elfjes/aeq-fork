@@ -11,13 +11,10 @@ jobs:
   setup-and-run:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Install uv
       uses: astral-sh/setup-uv@v7
-
-    - name: Install python
-      run: uv python install
 
     - name: Install build dependencies (macOS)
       run: |
@@ -27,9 +24,15 @@ jobs:
         echo "LDFLAGS=-L/opt/homebrew/opt/llvm/lib" >> $GITHUB_ENV
         echo "CPPFLAGS=-I/opt/homebrew/opt/llvm/include" >> $GITHUB_ENV
 
-    - name: Install
+    - name: Install Python and create virtual environment
+      run: uv venv .venv --python-preference only-managed  --clear
+
+    - name: Install dependencies (macOS)
+      env:
+        CXX: /opt/homebrew/opt/llvm/bin/clang++
+        CC: /opt/homebrew/opt/llvm/bin/clang
       run: uv sync --locked
 
     - name: Run script
       run: |
-          uv run main.py
+          DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/homebrew/lib uv run main.py
